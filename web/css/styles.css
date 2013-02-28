@@ -1,14 +1,18 @@
+
+
 .articleListClass h4{
 	margin-top: 5px;
 	margin-left: 7px;
 	margin-right: 7px;
 	margin-bottom: 5px;
+	color: #4DFF4D;
 }
 
 .articleListClass footer{
 	margin-left: 7px;
 	font-size: 95%;
 	margin-bottom: 1px;
+	color: #4DFF4D;
 }
 
 .articleListClass .section {
@@ -27,6 +31,7 @@ img {
 	margin-left: 7px;
 	margin-right: 7px;
 	font-size: 105%;
+	color: #4DFF4D;
 }
 
 .articleViewClass footer{
@@ -35,6 +40,7 @@ img {
 	margin-top: 5px;
 	margin-bottom: 3px;
 	font-size: 105%;
+	color: #4DFF4D;
 }
 
 .articleViewClass h4{
@@ -42,6 +48,8 @@ img {
 	margin-bottom: 7px;
 	margin-left: 7px;
 	margin-right: 7px;
+	color: #4DFF4D;
+
 }
 
 .app-section.active {
@@ -68,10 +76,61 @@ img {
 	color: transparent;
 }
 
-.app-content{
-	background-color: #D3D3D3;
+.app-section{
+	background-color: #0F161A;
+}
+
+.app-content {
+	background-color: #0F161A;
+}
+
+.app-page {
+	background-color: #0F161A;
+}
+
+.ListOfArticles {
+	background-color: #0F161A;
+}
+
+.app-topbar .app-button {
+	background-color: #0F161A;
+	border-color: #0F161A;
+	outline-color: #0F161A;
+	color: #4DFF4D;
+	box-shadow: #0F161A;
+	border-collapse: 0px;
+}
+
+.ListOfArticles .app-content {
+	background-color: #0F161A;
 }
 
 .wrapper {
 	height: 100%;
+}
+
+.app-title{
+	color: #4DFF4D;
+}
+
+.app-button {
+	color: #4DFF4D;
+}
+
+.articleViewClass {
+	background-color: #0F161A;
+}
+
+.articleview {
+
+	background-color: #0F161A;
+
+}
+
+.articleViewClass .app-section:first-child {
+	margin-top: 0px;
+}
+
+.app-title {
+	background-color: #0F161A;
 }

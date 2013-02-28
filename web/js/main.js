@@ -20,7 +20,7 @@
 				
 				var slideviewer = new SlideViewer(wrapper, source, {
 					//startAt: parseInt(data.index, 2),
-					startAt: feedNum,
+					startAt: 1,
 					length: 2,
 				});
 
@@ -30,15 +30,15 @@
 
 				function source(i){
 
-					var list = $('<div />');
+					var list = $('<div />').addClass("ListOfArticles");
 
 					if(i === 0){
 
-				MyAPI.getVergeArticles(function(meta,articles){
+						MyAPI.getVergeArticles(function(meta,articles){
 
-					populateVergeArticleList(articles,list);
+						populateVergeArticleList(articles,list);
 
-				});
+					});
 			} else if(i === 1){
 
 				MyAPI.getEngadgetArticles(function(meta,articles){
@@ -56,19 +56,19 @@
 			
 
 			function populateVergeArticleList(data,list){
-				console.log(data);
+				//console.log(data);
 				data.forEach(function (item){
 
 					var articleTitle = item['title'];
-					var articleDescription = item['description'];
-					var articleDate = item['pubDate'];
-					var articleLink = item['link'];
+					//var articleDescription = item['description'];
+					//var articleDate = item['pubDate'];
+					//var articleLink = item['link'];
 					var articleAuthor = item['author'];
 
 					//var list = $('<div />');
 					var section = $('<div />').addClass('app-section');
-					var temp = $('<div />').html(articleDescription);
-					var description = temp.find('p').text();
+					//var temp = $('<div />').html(articleDescription);
+					//var description = temp.find('p').text();
 					var title = $('<h4 />');
 					var author = $('<footer />');
 
@@ -99,44 +99,43 @@
 			}
 
 			function populateEngadgetArticleList(data,list){
-				console.log(data);
+				//console.log(data);
 				data.forEach(function (item){
 
 					var articleTitle = item['title'];
-					var articleDescription = item['description'];
-					var articleLink = item['link'];
+					//var articleDescription = item['description'];
+					//var articleLink = item['link'];
 					var articleAuthor = item['dc:creator']['#'];
 					//var list = $('<div />');
-					var section = $('<div />').addClass('app-section');
-					var temp = $('<div />').html(articleDescription);
-					var description = temp.find('p').text();
+					var sectionE = $('<div />').addClass('app-section');
+					//var temp = $('<div />').html(articleDescription);
+					//var description = temp.find('p').text();
 					var title = $('<h4 />');
 					var author = $('<footer />');
 
 					//$(page).find('#appListPage').append(list);
-					list.append(section);
-					section.append(title);
-					section.append(author);
+					list.append(sectionE);
+					sectionE.append(title);
+					sectionE.append(author);
 
 					title.text(articleTitle);
 					author.text(articleAuthor);
 
-					section.clickable();
+					sectionE.clickable();
 					var passingData = {'item':item,'list':'engadget'};
-					section.on('click',function(){
+					sectionE.on('click',function(){
+
+						console.log('Engadget Article Clicked');
 
 						App.load('articleView',passingData,'scale-in');
 
 					});
-
-
 
 				});
 
 				list.css('height','100%');
 
 				list.scrollable();
-
 			}
 
 
