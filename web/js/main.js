@@ -36,10 +36,11 @@ App.populator('list', function (page, data) {
 // 	}
 
 	function source(i) {
-		var list = $('<ul />').addClass('app-list');
 		var feed = feeds[i];
 		if (!feed) return;
 
+		var list = $('<ul />').addClass('app-list');
+		list.html('Loading...');
 		MyAPI.loadFeed(feed.url, function (meta, articles) {
 			populateArticleList(articles, list, i);
 		});
@@ -48,6 +49,7 @@ App.populator('list', function (page, data) {
 	}
 
 	function populateArticleList(articles, list, feedNum) {
+		list.html('');
 		articles.forEach(function (article) {
 			var row = $('<div />').addClass('app-button');
 			row.text(article.title);
@@ -71,7 +73,7 @@ App.populator('list', function (page, data) {
 });
 
 App.populator('content', function (page, data) {
-	var article = data['article'];
+	var article = data.article;
 
 	var temp = $('<div />').html(article.description);
 	var image = temp.find('img');
