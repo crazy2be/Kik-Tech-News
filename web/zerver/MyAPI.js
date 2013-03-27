@@ -1,10 +1,10 @@
 var feedparser = require('../../node_modules/feedparser');
 
-exports.getVergeArticles = function (callback) {
-	feedparser.parseUrl('http://www.theverge.com/rss/index.xml').on('complete',callback);
-}
-
-exports.getEngadgetArticles = function (callback) {
-	feedparser.parseUrl('http://www.engadget.com/rss.xml').on('complete',callback);
+var feeds = {
+	verge: 'http://www.theverge.com/rss/index.xml',
+	engadget: 'http://www.engadget.com/rss.xml',
+};
+exports.loadFeed = function (name, callback) {
+	feedparser.parseUrl(feeds[name]).on('complete',callback);
 }
 

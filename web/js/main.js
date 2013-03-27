@@ -1,49 +1,50 @@
-App.populator('articleList', function (page, feed) {
-	var feedNum;
-
-	if (feed['list'] === 'verge') {
-		feedNum = 0;
-	} else if (feed['list'] === 'engadget') {
-		feedNum = 1;
-	} else {
-		feedNum = 0;
-	}
+var feeds = [
+	'verge',
+	'engadget',
+];
+App.populator('articleList', function (page, data) {
+	var feedNum = +data.feed || 0;
 
 	changeMainTitle(feedNum);
 
 	var wrapper = page.querySelector('.wrapper');
-	wrapper.innerHTML = '';
-
-	var slideviewer = new SlideViewer(wrapper, source, {
+	var slideviewer = new PhotoViewer._SlideViewer(wrapper, source, {
 		startAt: feedNum,
 		length: 2,
 	});
 
-	/* If the device is an android then the slideviwer will disable 3d as 3d makes android fucked*/
+	page.addEventListener('appLayout', function () {
+		slideviewer.refreshSize();
+	});
+
+	// Android hates having too much 3d, and will break our clicks in
+	// vengence. This is a hacky workaround.
 	if (App.platform == 'android') {
 		slideviewer.disable3d();
 		slideviewer.on('move', function () {
 			slideviewer.enable3d();
 		});
 	}
-	page.addEventListener('appLayout', function () {
-		slideviewer.refreshSize();
-	});
 
 	function source(i) {
 		var list = $('<div />');
-		if (i === 0) {
-			MyAPI.getVergeArticles(function (meta, articles) {
-				populateVergeArticleList(articles, list);
-			});
-		} else if (i === 1) {
-			MyAPI.getEngadgetArticles(function (meta, articles) {
-				populateEngadgetArticleList(articles, list);
-			});
-		}
-		return list[0];
+		var feed = feeds[i];
+		if (!feed) return;
+
+		MyAPI.loadFeed(feed, function (meta, articles) {
+			populateArticleList(articles, list, feed);
+		});
+
+		return list;
 	}
 
+	function populateArticleList(articles, list, feed) {
+		articles.forEach(function (item) {
+			var section = $('<div />').addClass('app-section');
+			section.text(item.title);
+			list.append(section);
+		});
+	}
 	function populateVergeArticleList(data, list) {
 		console.log(data);
 		data.forEach(function (item) {
@@ -54,8 +55,9 @@ App.populator('articleList', function (page, feed) {
 			var articleAuthor = item['author'];
 
 			var section = $('<div />').addClass('app-section');
-			var temp = $('<div />').html(articleDescription);
-			var description = temp.find('p').text();
+			var temp = document.createElement('div');
+			temp.innerHTML = articleDescription;
+			var description = $(temp).find('p').text();
 			var title = $('<h4 />');
 			var author = $('<footer />');
 
@@ -88,8 +90,9 @@ App.populator('articleList', function (page, feed) {
 			var articleAuthor = item['dc:creator']['#'];
 
 			var section = $('<div />').addClass('app-section');
-			var temp = $('<div />').html(articleDescription);
-			var description = temp.find('p').text();
+			var temp = document.createElement('div');
+			temp.innerHTML = articleDescription;
+			var description = $(temp).find('p').text();
 			var title = $('<h4 />');
 			var author = $('<footer />');
 
