@@ -2,6 +2,10 @@ var feeds = [
 	'verge',
 	'engadget',
 ];
+var feedTitles = [
+	'The Verge',
+	'Engadget',
+];
 App.populator('articleList', function (page, data) {
 	var feedNum = +data.feed || 0;
 
@@ -19,15 +23,15 @@ App.populator('articleList', function (page, data) {
 
 	// Android hates having too much 3d, and will break our clicks in
 	// vengence. This is a hacky workaround.
-	if (App.platform == 'android') {
-		slideviewer.disable3d();
-		slideviewer.on('move', function () {
-			slideviewer.enable3d();
-		});
-	}
+// 	if (App.platform == 'android') {
+// 		slideviewer.disable3d();
+// 		slideviewer.on('move', function () {
+// 			slideviewer.enable3d();
+// 		});
+// 	}
 
 	function source(i) {
-		var list = $('<div />');
+		var list = $('<ul />').addClass('app-list');
 		var feed = feeds[i];
 		if (!feed) return;
 
@@ -40,90 +44,26 @@ App.populator('articleList', function (page, data) {
 
 	function populateArticleList(articles, list, feed) {
 		articles.forEach(function (item) {
-			var section = $('<div />').addClass('app-section');
-			section.text(item.title);
-			list.append(section);
-		});
-	}
-	function populateVergeArticleList(data, list) {
-		console.log(data);
-		data.forEach(function (item) {
-			var articleTitle = item['title'];
-			var articleDescription = item['description'];
-			var articleDate = item['pubDate'];
-			var articleLink = item['link'];
-			var articleAuthor = item['author'];
-
-			var section = $('<div />').addClass('app-section');
-			var temp = document.createElement('div');
-			temp.innerHTML = articleDescription;
-			var description = $(temp).find('p').text();
-			var title = $('<h4 />');
-			var author = $('<footer />');
-
-			section.append(title);
-			section.append(author);
-			title.text(articleTitle);
-			author.text(articleAuthor);
-			section.clickable();
-			list.append(section);
-
-			var passingData1 = {
-				'item': item,
-				'list': 'verge'
-			};
-
-			section.on('click', function () {
-				App.load('articleView', passingData1, 'scale-in');
+			var row = $('<div />').addClass('app-button');
+			row.text(item.title);
+			row.clickable().on('click', function () {
+				var data = {
+					item: item,
+					feed: feeds.indexOf(feed),
+				}
+				App.load('articleView', data);
 			});
+			list.append(row);
 		});
 		list.css('height', '100%');
 		list.scrollable();
 	}
-
-	function populateEngadgetArticleList(data, list) {
-		console.log(data);
-		data.forEach(function (item) {
-			var articleTitle = item['title'];
-			var articleDescription = item['description'];
-			var articleLink = item['link'];
-			var articleAuthor = item['dc:creator']['#'];
-
-			var section = $('<div />').addClass('app-section');
-			var temp = document.createElement('div');
-			temp.innerHTML = articleDescription;
-			var description = $(temp).find('p').text();
-			var title = $('<h4 />');
-			var author = $('<footer />');
-
-			section.append(title);
-			section.append(author);
-			title.text(articleTitle);
-			author.text(articleAuthor);
-			section.clickable();
-			list.append(section);
-			var passingData = {
-				'item': item,
-				'list': 'engadget'
-			};
-			section.on('click', function () {
-				App.load('articleView', passingData, 'scale-in');
-			});
-		});
-		list.css('height', '100%');
-		list.scrollable();
-	}
-	slideviewer.on('flip', changeMainTitle);
 
 	function changeMainTitle(slideNum) {
-		if (App.platform == 'android' && slideviewer) {
-			slideviewer.disable3d();
-		}
-		if (slideNum == 0) {
-			$(page).find('#titleMainPage').text('The Verge');
-		} else if (slideNum == 1) {
-			$(page).find('#titleMainPage').text('Engadget');
-		}
+// 		if (App.platform == 'android' && slideviewer) {
+// 			slideviewer.disable3d();
+// 		}
+		$(page).find('#titleMainPage').text(feedTitles[slideNum]);
 	}
 
 	var refreshPage = $(page).find('#titleMainPage');
