@@ -48,12 +48,12 @@ App.populator('list', function (page, data) {
 	}
 
 	function populateArticleList(articles, list, feedNum) {
-		articles.forEach(function (item) {
+		articles.forEach(function (article) {
 			var row = $('<div />').addClass('app-button');
-			row.text(item.title);
+			row.text(article.title);
 			row.clickable().on('click', function () {
 				var data = {
-					item: item,
+					article: article,
 					feed: feedNum,
 				}
 				App.load('content', data);
@@ -71,64 +71,32 @@ App.populator('list', function (page, data) {
 });
 
 App.populator('content', function (page, data) {
-	var item = data['item'];
-	var list = data['list'];
+	var article = data['article'];
 
-	var continueButton = $(page).find('#continue');
-	var articleTitle = item['title'];
-	var articleDescription = item['description'];
-	var articleLink = item['link'];
-	var articleAuthor = item['author'];
-
-	var sectionTitle = $('<div />').addClass('app-section');
-	var secttionArticle = $('<div />').addClass('app-section');
-	var secttionImage = $('<div />').addClass('app-section');
-
-	var temp = $('<div />').html(articleDescription);
+	var temp = $('<div />').html(article.description);
 	var image = temp.find('img');
 	var description = temp.text().replace('Continue reading', '').replace('…', '');
-	var descriptionWithTag = $('<p />');
-	descriptionWithTag.text(description);
 
-	var title = $('<h4 />');
-	var author = $('<footer />');
-	$(page).find('.articleview').append(sectionTitle);
-	sectionTitle.append(title);
-	$(page).find('.articleview').append(secttionImage);
-	secttionImage.append(image);
-	$(page).find('.articleview').append(secttionArticle);
-
-	secttionArticle.append(descriptionWithTag);
-	secttionArticle.append(author);
-
-	title.text(articleTitle);
-	author.text(articleAuthor);
-
+	$(page).find('.title').html(article.title);
+	$(page).find('.image').replaceWith(image);
+	$(page).find('.content').html(description);
 	$(page).find('#kikMe').on('click', function () {
-		var x = JSON.stringify(data);
-		var url = image.attr('src');
 		cards.kik.send({
-			title: title.text(),
-			text: 'Check This Out!!',
-			pic: url,
+			title: article.title,
+			text: description,
+			pic: image.attr('src'),
 			big: false,
-			linkData: x,
+			linkData: JSON.stringify(data),
 		});
 	});
-
-	continueButton.on('click', function () {
-		cards.browser.open(item['link']);
+	$(page).find('#continue').on('click', function () {
+		var url = article['link'];
+		var open = cards.browser && cards.browser.open || window.open;
+		open(url);
 	});
-
 	if (cards.browser && cards.browser.linkData) {
-		// Card was launched by a conversation
-		$(page).find('#originalHome').replaceWith('<div class ="app-button left" id="home">Home</div>');
-		var homeButton = $(page).find('#home');
-		var listObj = {
-			'list': list
-		};
-		homeButton.on('click', function () {
-			App.load('articleList', listObj, 'scale-out')
+		$(page).find('#home').on('click', function () {
+			App.load('list', {feed: data.feed});
 			cards.browser.linkData = '';
 		});
 	}
