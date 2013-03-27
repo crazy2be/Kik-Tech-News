@@ -1,16 +1,16 @@
 var feeds = [
-	'verge',
-	'engadget',
+	{
+		id: 'verge',
+		name: 'The Verge',
+		url: 'http://www.theverge.com/rss/index.xml',
+	},{
+		id: 'engadget',
+		name: 'Engadget',
+		url: 'http://www.engadget.com/rss.xml',
+	},
 ];
-var feedTitles = [
-	'The Verge',
-	'Engadget',
-];
-App.populator('articleList', function (page, data) {
+App.populator('list', function (page, data) {
 	var feedNum = +data.feed || 0;
-
-	changeMainTitle(feedNum);
-
 	var wrapper = page.querySelector('.wrapper');
 	var slideviewer = new PhotoViewer._SlideViewer(wrapper, source, {
 		startAt: feedNum,
@@ -19,6 +19,11 @@ App.populator('articleList', function (page, data) {
 
 	page.addEventListener('appLayout', function () {
 		slideviewer.refreshSize();
+	});
+
+	updateTitle(feedNum);
+	slideviewer.on('flip', function (feedNum) {
+		updateTitle(feedNum);
 	});
 
 	// Android hates having too much 3d, and will break our clicks in
@@ -35,23 +40,23 @@ App.populator('articleList', function (page, data) {
 		var feed = feeds[i];
 		if (!feed) return;
 
-		MyAPI.loadFeed(feed, function (meta, articles) {
-			populateArticleList(articles, list, feed);
+		MyAPI.loadFeed(feed.url, function (meta, articles) {
+			populateArticleList(articles, list, i);
 		});
 
 		return list;
 	}
 
-	function populateArticleList(articles, list, feed) {
+	function populateArticleList(articles, list, feedNum) {
 		articles.forEach(function (item) {
 			var row = $('<div />').addClass('app-button');
 			row.text(item.title);
 			row.clickable().on('click', function () {
 				var data = {
 					item: item,
-					feed: feeds.indexOf(feed),
+					feed: feedNum,
 				}
-				App.load('articleView', data);
+				App.load('content', data);
 			});
 			list.append(row);
 		});
@@ -59,30 +64,13 @@ App.populator('articleList', function (page, data) {
 		list.scrollable();
 	}
 
-	function changeMainTitle(slideNum) {
-// 		if (App.platform == 'android' && slideviewer) {
-// 			slideviewer.disable3d();
-// 		}
-		$(page).find('#titleMainPage').text(feedTitles[slideNum]);
+	function updateTitle(feedNum) {
+		var title = page.querySelector('.app-title');
+		title.innerHTML = feeds[feedNum].name;
 	}
-
-	var refreshPage = $(page).find('#titleMainPage');
-	refreshPage.clickable().on('click', function () {
-		if (refreshPage.text() == 'Engadget') {
-			var passObj = {
-				'list': 'engadget'
-			};
-			App.load('articleList', passObj, 'fade');
-		} else if (refreshPage.text() == 'The Verge') {
-			var passObj = {
-				'list': 'verge'
-			};
-			App.load('articleList', passObj, 'fade');
-		}
-	});
 });
 
-App.populator('articleView', function (page, data) {
+App.populator('content', function (page, data) {
 	var item = data['item'];
 	var list = data['list'];
 
@@ -146,9 +134,10 @@ App.populator('articleView', function (page, data) {
 	}
 });
 
+if (!window.cards) window.cards = {};
 if (cards.browser && cards.browser.linkData) {
 	// Card was launched by a conversation
-	App.load('articleView', cards.browser.linkData);
+	App.load('content', cards.browser.linkData);
 } else {
-	App.load('articleList', 'verge');
+	App.load('list');
 }

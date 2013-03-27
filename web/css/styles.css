@@ -1,28 +1,21 @@
-.articleListClass h4{
-	margin-top: 5px;
-	margin-left: 7px;
-	margin-right: 7px;
-	margin-bottom: 5px;
-}
-
-.articleListClass footer{
-	margin-left: 7px;
-	font-size: 95%;
-	margin-bottom: 1px;
-}
-
-.articleListClass .section {
-	border-radius: 15px;
-}
-
-img {
+.content img {
 	width: 100%;
 	height: auto;
 	margin-bottom: -5px;
-
 }
 
-.articleViewClass p{
+.wrapper {
+	height: 100%;
+}
+
+.loader{
+	height: 100%;
+	background-image: url('../img/bigger-loader.gif');
+	background-repeat: no-repeat;
+	background-position: center;
+}
+
+/*.articleViewClass p{
 	margin-top: 5px;
 	margin-left: 7px;
 	margin-right: 7px;
@@ -52,12 +45,12 @@ img {
 }
 
 .app-section {
-	-webkit-tap-highlight-color: purple; 
+	-webkit-tap-highlight-color: purple;
 }
 
 .app-section.active:first-child{
 	margin-top: 5px;
-}
+}*/
 
 .app-android .app-topbar .app-button.left {
 	padding: 0;
@@ -75,17 +68,6 @@ img {
 	background-color: #AAA;
 }*/
 
-.app-content{
+/*.app-content{
 	background-color: #D3D3D3;
-}
-
-.wrapper {
-	height: 100%;
-}
-
-.loader{
-	/*height: 100%;
-	background-image: url('../img/bigger-loader.gif');
-	background-repeat: no-repeat;
-	background-position: center;*/
-}
+}*/

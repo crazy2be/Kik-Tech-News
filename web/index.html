@@ -1,11 +1,9 @@
 <!DOCTYPE html>
 <html manifest="cache.manifest">
 	<head>
-		<!-- App details -->
 		<title>Tech Feed</title>
 		<link rel="kik-icon" href="img/appIcon.png">
 
-		<!-- Styles -->
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 		<link rel="stylesheet" href="css/default.css">
 		<link rel="stylesheet" href="css/app.css">
@@ -14,36 +12,36 @@
 
 	<body>
 
-		<div class ="app-page articleListClass" data-page="articleList">
+		<div class ="app-page list" data-page="list">
 			<div class="app-topbar">
-				<div class="app-title" id="titleMainPage">Loading....</div>
+				<div class="app-title">Loading...</div>
 			</div>
-		<div class="app-content" data-no-scroll="true" id="appListPage">
-			<div class="wrapper">
-				<div class="app-section loader">Loading .. </div>
+			<div class="app-content" data-no-scroll="true">
+				<div class="wrapper">
+					<div class="loader">Loading...</div>
+				</div>
 			</div>
 		</div>
 
 		<!-- Article View Page -->
-
-		<div class="app-page articleViewClass" data-page="articleView">
+		<div class="app-page content" data-page="content">
 			<div class="app-topbar">
-				<div class="app-title" id="articleViewTitle">Reeder</div>
-				<div class = "app-button left" data-back = "true" id="originalHome">Home</div>
-				<div class = "app-button right" id="kikMe">Kik</div>
+				<div class="app-title">Reeder</div>
+				<div class="app-button left" data-back="true" id="originalHome">Home</div>
+				<div class="app-button right" id="kikMe">Kik</div>
 			</div>
-			<div class = "app-content">
-				<div class ="articleview">
+			<div class="app-content">
+				<div class="articleview">
 				</div>
-				<div class = "app-section">
-					<div class = "app-button" id="continue">Continue Reading</div>
+				<div class="app-section">
+					<div class="app-button" id="continue">Continue Reading</div>
 				</div>
 			</div>
 		</div>
 
 		<!-- Scripts -->
 		<script src="http://zeptojs.com/zepto.min.js"></script>
-		<script src="http://cdn.kik.com/cards/0/cards.js"></script>
+<!-- 		<script src="http://cdn.kik.com/cards/0/cards.js"></script> -->
 		<script src="http://cdn.kik.com/app/1/app.js"></script>
 <!-- 		<script src="http://cdn.kik.com/clickable/1.1.0/clickable.js"></script> -->
 <!-- 		<script src="js/slide-viewer.js"></script> -->
