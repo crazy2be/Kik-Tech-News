@@ -129,16 +129,16 @@ PhotoViewer._SlideViewer = (function (Zepto, jQuery) {
 
 				sa.left = (page - 1) * 100 + '%';
 				if (page === 0) sa.visibility = 'hidden';
-							else sa.visibility = 'visible';
+				else sa.visibility = 'visible';
 
-							sb.left = page * 100 + '%';
+				sb.left = page * 100 + '%';
 				sb.visibility = 'visible';
 
 				sc.left = (page + 1) * 100 + '%';
 				if (page === len - 1) sc.visibility = 'hidden';
-							else sc.visibility = 'visible';
+				else sc.visibility = 'visible';
 
-							m[a].newPage = page === 0 ? len - 1 : page - 1;
+				m[a].newPage = page === 0 ? len - 1 : page - 1;
 				m[b].newPage = page;
 				m[c].newPage = page === len - 1 ? 0 : page + 1;
 			}
@@ -160,7 +160,7 @@ PhotoViewer._SlideViewer = (function (Zepto, jQuery) {
 				var m = masters[i];
 				if (m.newPage == m.page) continue;
 
-							m.elm.innerHTML = '';
+				m.elm.innerHTML = '';
 				m.elm.appendChild(getElement(m.newPage));
 
 				m.page = m.newPage;
@@ -189,7 +189,7 @@ PhotoViewer._SlideViewer = (function (Zepto, jQuery) {
 
 		self.invalidate = function () {
 			for (var i = 0; i < 3; i++) masters[i].page = -1;
-							self.setPage(page);
+			self.setPage(page);
 			return self;
 		}
 
@@ -319,27 +319,27 @@ PhotoViewer._SlideViewer = (function (Zepto, jQuery) {
 
 				if (xPos > 0 || xPos < minX) dist *= 0.15;
 
-							if (dist < snapThreshold) {
-								var time = Math.floor(300 * dist / snapThreshold);
-								setTransitionDuration(time);
+				if (dist < snapThreshold) {
+					var time = Math.floor(300 * dist / snapThreshold);
+					setTransitionDuration(time);
 
-								newX = -page * pageWidth;
-								setPos(newX, onTransitionEnd);
-								return;
-							}
+					newX = -page * pageWidth;
+					setPos(newX, onTransitionEnd);
+					return;
+				}
 
-							if (deltaX > 0) {
-								page = Math.floor(-xPos / pageWidth);
-							} else {
-								page = Math.ceil(-xPos / pageWidth);
-							}
+				if (deltaX > 0) {
+					page = Math.floor(-xPos / pageWidth);
+				} else {
+					page = Math.ceil(-xPos / pageWidth);
+				}
 
-							newX = -page * pageWidth;
+				newX = -page * pageWidth;
 
-							var time = Math.floor(200 * Math.abs(xPos - newX) / pageWidth);
-							setTransitionDuration(time);
+				var time = Math.floor(200 * Math.abs(xPos - newX) / pageWidth);
+				setTransitionDuration(time);
 
-							setPos(newX, onTransitionEnd);
+				setPos(newX, onTransitionEnd);
 			}
 
 			function onEndNoMove() {
@@ -432,7 +432,7 @@ PhotoViewer._SlideViewer = (function (Zepto, jQuery) {
 			if (t == startEvent) {
 				if (hasTouch) {
 					if (lastTouch) return;
-							lastTouch = e.changedTouches[0];
+				   lastTouch = e.changedTouches[0];
 				}
 				eventBus.fire('start', hasTouch ? e.changedTouches[0] : e);
 			} else if (t == moveEvent) {
@@ -452,10 +452,10 @@ PhotoViewer._SlideViewer = (function (Zepto, jQuery) {
 
 				if (!lastTouch) return;
 
-							var touch = findTouch(e.changedTouches, touchID);
+				var touch = findTouch(e.changedTouches, touchID);
 				if (!touch) touch = findTouch(e.touches, touchID);
 
-							eventBus.fire('end', touch);
+				eventBus.fire('end', touch);
 				lastTouch = null;
 			}
 		}
