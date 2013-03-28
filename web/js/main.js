@@ -51,8 +51,9 @@ App.populator('list', function (page, data) {
 	function populateArticleList(articles, list, feedNum) {
 		list.html('');
 		articles.forEach(function (article) {
-			var row = $('<div />').addClass('app-button');
-			row.text(article.title);
+			var row = $('<li />').addClass('app-button');
+			var title = $('<div />').addClass('title');
+			title.text(article.title);
 			row.clickable().on('click', function () {
 				var data = {
 					article: article,
@@ -60,6 +61,7 @@ App.populator('list', function (page, data) {
 				}
 				App.load('content', data);
 			});
+			row.append(title);
 			list.append(row);
 		});
 		list.css('height', '100%');
@@ -77,10 +79,11 @@ App.populator('content', function (page, data) {
 
 	var temp = $('<div />').html(article.description);
 	var image = temp.find('img');
+	var imageUrl = getThumbnailURL(image.attr('src'), 0, window.innerWidth, 1);
 	var description = temp.text().replace('Continue reading', '').replace('…', '');
 
 	$(page).find('.title').html(article.title);
-	$(page).find('.image').replaceWith(image);
+	$(page).find('.image').attr('src', imageUrl);
 	$(page).find('.content').html(description);
 	$(page).find('#kikMe').on('click', function () {
 		cards.kik.send({
@@ -110,4 +113,32 @@ if (cards.browser && cards.browser.linkData) {
 	App.load('content', cards.browser.linkData);
 } else {
 	App.load('list');
+}
+
+/*
+ *   url     = URL of image (must contain a hostname)
+ *   height  = desired height of thumbnail in pixels
+ *   width   = desired width of thumbnail in pixels
+ *   quality = desired quality of thumbnail (values are 0 to 2)
+ *
+ *   If only one dimension is specified, aspect ratio will be preserved
+ *   and the thumbnail will be a scaled version of the original.
+ *   If both dimensions are specified, the image will be scaled and
+ *   cropped to the desired dimensions.
+ */
+function getThumbnailURL (url, height, width, quality) {
+	if (!height && !width) {
+		throw 'height and/or width must be specified';
+	}
+
+	var BASE_URL = 'http://cards-thumbnailer.appspot.com/';
+	var thumbURL = BASE_URL;
+
+	thumbURL += encodeURIComponent(url) + '?';
+
+	thumbURL += 'h=' + (height  || '') + '&';
+	thumbURL += 'w=' + (width   || '') + '&';
+	thumbURL += 'q=' + (quality || 0 );
+
+	return thumbURL;
 }
